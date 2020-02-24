@@ -38,13 +38,21 @@ def main(opt):
         if len(layer.get_weights()) != 0:
             nn_weights, nn_biases = nn.weights[layer_idx], nn.biases[layer_idx]
             model_weights, model_biases = layer.get_weights()
+            
+            print(f"Here's my (flattened) layer {layer_idx} weights after backprop", nn_weights.flatten())
+            print(f"Here's keras's (flattened) layer {layer_idx} weights after backprop", model_weights.flatten())
+            print(f"Here's the (flattend) difference in the layer {layer_idx} weights", (model_weights - nn_weights).flatten())
+            
             if not np.allclose(nn_weights, model_weights):
                 print(f"There is a weight difference (> 1e-5) between my neural net and keras's model at layer {layer_idx}.")
-                print(f"Here's the difference in the weights", model_weights - nn_weights)
+
+            print(f"Here's my layer {layer_idx} biases after backprop", nn_biases)
+            print(f"Here's keras's layer {layer_idx} biases after backprop", model_biases)
+            print(f"Here's the difference in the layer {layer_idx} biases:", model_biases - nn_biases)
 
             if not np.allclose(model_biases, nn_biases):
                 print(f"There is a bias difference (> 1e-5) between my neural net and keras's model at layer {layer_idx}.")
-                print(f"Here's the difference in the biases:", model_biases - nn_biases)
+
     
 
 if __name__ == '__main__':
